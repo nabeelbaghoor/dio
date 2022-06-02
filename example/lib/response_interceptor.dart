@@ -8,10 +8,11 @@ void main() async {
   const URL_NOT_FIND_2 = URL_NOT_FIND + '2';
   const URL_NOT_FIND_3 = URL_NOT_FIND + '3';
   var dio = Dio();
-  dio.options.baseUrl = 'http://httpbin.org/';
+  dio.options.baseUrl = 'http://localhost:8085/';
   dio.interceptors.add(InterceptorsWrapper(
     onResponse: (response, handler) {
-      response.data = json.decode(response.data['data']);
+      // print(response.data['data']);
+      // response.data = json.decode("{}");
       handler.next(response);
     },
     onError: (DioError e, handler) {
@@ -48,8 +49,9 @@ void main() async {
   ));
 
   Response response;
-  response = await dio.post('/post', data: {'a': 5});
-  print(response.headers);
+  response = await dio.get('/client/bee.mp4');
+  // response = await dio.post('/client/bee.mp4', data: {'a': 7});
+  print(response.data);
   assert(response.data['a'] == 5);
   try {
     await dio.get(URL_NOT_FIND);
